@@ -18,6 +18,7 @@ package stream
 
 import (
 	"bytes"
+	"context"
 	"errors"
 	"fmt"
 	"time"
@@ -255,10 +256,10 @@ func (d *Delivery) RequestFromPeers(hash []byte, skipCheck bool, peersToSkip ...
 			return true
 		}
 		// TODO: skip light nodes that do not accept retrieve requests
-		err = sp.SendPriority(&RetrieveRequestMsg{
+		err = sp.Send(context.TODO(), &RetrieveRequestMsg{
 			Key:       hash,
 			SkipCheck: skipCheck,
-		}, Top)
+		})
 		if err != nil {
 			return true
 		}
